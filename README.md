@@ -1,9 +1,12 @@
-Para compilar
+#Tweet collector
 
-  gradle jar
-  
-Para ejecutar
+Este Daemon recolecta en tiempo real los tweets que contengan ciertas palabras clave
 
-  java -cp build/libs/twitter-streaming-1.0.jar cl.citiaps.twitter.streaming.TwitterStreaming
+
+## Para compilar
+
+- gradle jar
   
- NO OLVIDAR modificar twitter4j.properties para agregar parámetros de autenticación
+## Para ejecutar
+
+- java -cp build/libs/twitter-streaming-1.0.jar controller.TwitterStreaming
