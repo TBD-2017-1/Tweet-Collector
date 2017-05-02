@@ -1,2 +1,4 @@
 # intelliJ IDEA configuration files
-.idea/*
+.idea/
+build/
+.gradle/
