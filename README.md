@@ -1,4 +1,4 @@
-#Tweet collector
+#Tweet Collector
 
 Este Daemon recolecta en tiempo real los tweets que contengan ciertas palabras clave
 
@@ -9,4 +9,4 @@ Este Daemon recolecta en tiempo real los tweets que contengan ciertas palabras c
   
 ## Para ejecutar
 
-- java -cp build/libs/twitter-streaming-1.0.jar controller.TwitterStreaming
+- java -jar build/libs/collector-<ver>.jar

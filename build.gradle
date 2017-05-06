@@ -3,7 +3,6 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 sourceCompatibility = 1.8
-group = 'cl.citiaps.twitter'
 
 version = '1.1'
 
@@ -11,12 +10,16 @@ libsDirName = '../lib'
 
 
 jar {
-    manifest {
-        attributes  'Implementation-Title': 'tweet-collector',
-                    'Implementation-Version': version
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
-    dependsOn configurations.runtime
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes  'Implementation-Title': 'TweetColector',
+                    'Implementation-Version': version,
+                    'Main-Class': 'Collector.TwitterStreaming'
+    }
 }
 
 
@@ -25,13 +28,10 @@ repositories {
 }
 
 dependencies {
-
-    compile 'org.mongodb:mongodb-driver:3.4.2'
 	compile group: 'org.twitter4j', name: 'twitter4j-stream', version: '4.0.5'
 	compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.5'
 	compile group: 'commons-io', name: 'commons-io', version: '2.5'
-	
-	
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
 
 }
 

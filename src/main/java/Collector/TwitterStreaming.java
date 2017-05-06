@@ -1,4 +1,4 @@
-package controller;
+package Collector;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -60,8 +60,9 @@ public class TwitterStreaming {
 
 			@Override
 			public void onStatus(Status status) {
-				System.out.println(status.getId());
-				System.out.println(status.getText());
+				//System.out.println(status.getId());
+				//System.out.println(status.getText());
+				System.out.println(status.toString());
 
 			}
 		};
