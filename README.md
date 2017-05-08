@@ -1,4 +1,4 @@
-#Tweet Collector
+#Tweet PoliTweetsCL.Collector
 
 Este Daemon recolecta en tiempo real los tweets que contengan ciertas palabras clave
 
@@ -9,4 +9,4 @@ Este Daemon recolecta en tiempo real los tweets que contengan ciertas palabras c
   
 ## Para ejecutar
 
-- java -jar build/libs/collector-<ver>.jar
+- java -jar lib/collector-<ver>.jar

@@ -1,9 +1,12 @@
-package Collector;
+package PoliTweetsCL.Collector;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+import PoliTweetsCL.Core.BD.MongoDBController;
+import PoliTweetsCL.Core.Model.Tweet;
 import org.apache.commons.io.IOUtils;
 
 import twitter4j.FilterQuery;
@@ -13,6 +16,8 @@ import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
+
+
 
 public class TwitterStreaming {
 
@@ -36,6 +41,9 @@ public class TwitterStreaming {
 
 	private void init() {
 		StatusListener listener = new StatusListener() {
+			private MongoDBController db = new MongoDBController("admin","x");
+			// private MongoDBController db = new MongoDBController("admin","x"); // Conexion a VPS
+
 
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
@@ -60,10 +68,10 @@ public class TwitterStreaming {
 
 			@Override
 			public void onStatus(Status status) {
-				//System.out.println(status.getId());
-				//System.out.println(status.getText());
-				System.out.println(status.toString());
-
+				if(Objects.equals(status.getLang(), "es")){
+					Tweet tweet = new Tweet(status);
+					db.saveTweet(tweet);
+				}
 			}
 		};
 
