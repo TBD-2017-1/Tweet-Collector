@@ -23,11 +23,13 @@ public class TwitterStreaming {
 
 	private final TwitterStream twitterStream;
 	private Set<String> keywords;
+	private SentimentAnalyzer sentimentAnalyzer;
 
 	private TwitterStreaming() {
 		this.twitterStream = new TwitterStreamFactory().getInstance();
 		this.keywords = new HashSet<>();
 		loadKeywords();
+		sentimentAnalyzer = new SentimentAnalyzer();
 	}
 
 	private void loadKeywords() {
@@ -70,7 +72,8 @@ public class TwitterStreaming {
 			public void onStatus(Status status) {
 				if(Objects.equals(status.getLang(), "es")){
 					Tweet tweet = new Tweet(status);
-					db.saveTweet(tweet);
+					sentimentAnalyzer.findSentiment(tweet.getText());
+					//db.saveTweet(tweet);
 				}
 			}
 		};
