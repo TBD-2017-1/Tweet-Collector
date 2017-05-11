@@ -4,7 +4,7 @@ apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
-version = '1.1'
+version = '1.2'
 
 libsDirName = '../lib'
 
@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    compile name: 'core-1.0'
+    compile name: 'core-1.0.3'
 
     compile 'org.mongodb:mongodb-driver:3.2.2'
     compile 'edu.stanford.nlp:stanford-corenlp:3.7.0'

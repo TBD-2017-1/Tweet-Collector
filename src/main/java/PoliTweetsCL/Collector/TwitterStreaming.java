@@ -71,9 +71,14 @@ public class TwitterStreaming {
 			@Override
 			public void onStatus(Status status) {
 				if(Objects.equals(status.getLang(), "es")){
+					// generar tweet
 					Tweet tweet = new Tweet(status);
-					sentimentAnalyzer.findSentiment(tweet.getText());
-					//db.saveTweet(tweet);
+
+					// obtener sentimiento
+					tweet.setSentimiento(sentimentAnalyzer.findSentiment(tweet.getText()));
+
+					// guardar en mongodb
+					db.saveTweet(tweet);
 				}
 			}
 		};
