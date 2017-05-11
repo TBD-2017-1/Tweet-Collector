@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import PoliTweetsCL.Core.BD.MongoDBController;
+import PoliTweetsCL.Core.BD.MySQLController;
 import PoliTweetsCL.Core.Model.Tweet;
 import org.apache.commons.io.IOUtils;
 
@@ -33,19 +34,14 @@ public class TwitterStreaming {
 	}
 
 	private void loadKeywords() {
-		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			keywords.addAll(IOUtils.readLines(classLoader.getResourceAsStream("words.dat"), "UTF-8"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MySQLController sqlDB = new MySQLController();
+
+		keywords = sqlDB.getKeywords();
 	}
 
 	private void init() {
 		StatusListener listener = new StatusListener() {
 			private MongoDBController db = new MongoDBController("admin","x");
-			// private MongoDBController db = new MongoDBController("admin","x"); // Conexion a VPS
-
 
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
@@ -89,6 +85,7 @@ public class TwitterStreaming {
 
 		this.twitterStream.addListener(listener);
 		this.twitterStream.filter(fq);
+
 	}
 	
 	public static void main(String[] args) {
