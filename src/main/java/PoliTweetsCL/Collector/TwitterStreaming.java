@@ -34,14 +34,14 @@ public class TwitterStreaming {
 	}
 
 	private void loadKeywords() {
-		MySQLController sqlDB = new MySQLController();
+		MySQLController sqlDB = new MySQLController("root","DigitalOceanServer");
 
 		keywords = sqlDB.getKeywords();
 	}
 
 	private void init() {
 		StatusListener listener = new StatusListener() {
-			private MongoDBController db = new MongoDBController("admin","x");
+			private MongoDBController db = new MongoDBController("admin","DigitalOceanServer");
 
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
