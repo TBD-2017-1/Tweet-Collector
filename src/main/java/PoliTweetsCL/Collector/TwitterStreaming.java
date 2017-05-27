@@ -1,24 +1,14 @@
 package PoliTweetsCL.Collector;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-
 import PoliTweetsCL.Core.BD.MongoDBController;
 import PoliTweetsCL.Core.BD.MySQLController;
+import PoliTweetsCL.Core.Misc.Config;
 import PoliTweetsCL.Core.Model.Tweet;
+import twitter4j.*;
 
-import twitter4j.FilterQuery;
-import twitter4j.StallWarning;
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.StatusListener;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 
 
@@ -27,43 +17,28 @@ public class TwitterStreaming {
 	private final TwitterStream twitterStream;
 	private Set<String> keywords;
 	private SentimentAnalyzer sentimentAnalyzer;
-	private Properties prop = null;
+
+	private Config config;
 
 
 	private TwitterStreaming() {
-		loadProperties();
+		config = new Config();
 		this.twitterStream = new TwitterStreamFactory().getInstance();
 		this.keywords = new HashSet<>();
 		loadKeywords();
 		sentimentAnalyzer = new SentimentAnalyzer();
 	}
 
-	private void loadProperties(){
-		try{
-			prop = new Properties();
-			FileInputStream file;
-			File jarPath=new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-			String propertiesPath=jarPath.getParent();
-			prop.load(new FileInputStream(propertiesPath+ "/app.properties"));
-		}catch (Exception e){
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			try(InputStream resourceStream = loader.getResourceAsStream("appDefault.properties")) {
-				prop.load(resourceStream);
-			}catch (Exception ioe){
-				ioe.printStackTrace();
-			}
-		}
-	}
 
 	private void loadKeywords() {
-		MySQLController sqlDB = new MySQLController(prop);
+		MySQLController sqlDB = new MySQLController(config.getPropertiesObj());
 
 		keywords = sqlDB.getKeywords();
 	}
 
 	private void init() {
 		StatusListener listener = new StatusListener() {
-			private MongoDBController db = new MongoDBController(prop);
+			private MongoDBController db = new MongoDBController(config.getPropertiesObj());
 
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
